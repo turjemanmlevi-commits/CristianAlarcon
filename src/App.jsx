@@ -9,8 +9,10 @@ import LoginPage from './pages/LoginPage'
 import RegistroPage from './pages/RegistroPage'
 import ConfirmarPage from './pages/ConfirmarPage'
 import PerfilPage from './pages/PerfilPage'
+import { useTenant } from './context/TenantContext'
 
 export default function App() {
+    const { tenant, loading: loadingTenant } = useTenant()
     const [user, setUser] = useState(null)
     const [loading, setLoading] = useState(true)
     const [nextBooking, setNextBooking] = useState(null)
@@ -23,7 +25,7 @@ export default function App() {
         }
         setLoadingBooking(true)
 
-        const { data } = await supabase
+        let query = supabase
             .from('barber_bookings')
             .select(`
                 *,
@@ -34,6 +36,12 @@ export default function App() {
             .eq('status', 'confirmed')
             .gte('start_datetime', new Date().toISOString())
             .order('start_datetime', { ascending: true })
+
+        if (tenant) {
+            query = query.eq('tenant_id', tenant.id)
+        }
+
+        const { data } = await query
 
         // Filtro de seguridad con la lista negra local por USUARIO
         const blacklistKey = `cancelled_bookings_${userId}`
@@ -71,8 +79,19 @@ export default function App() {
         fetchNextBooking(user.id)
     }
 
-    if (loading) {
+    if (loading || loadingTenant) {
         return <div className="app-container"><div className="loading"><div className="spinner" /></div></div>
+    }
+
+    if (!tenant && window.location.hostname.split('.').length > 2) {
+        return (
+            <div className="app-container">
+                <div style={{ textAlign: 'center', padding: '50px', color: 'white' }}>
+                    <h1>404 - Barbería no encontrada</h1>
+                    <p>La barbería solicitada no existe o el enlace es incorrecto.</p>
+                </div>
+            </div>
+        )
     }
 
     return (

@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import AppBar from '../components/AppBar'
+import { useTenant } from '../context/TenantContext'
 
 export default function ProfesionalPage({ user }) {
+    const { tenant } = useTenant()
     const navigate = useNavigate()
     const location = useLocation()
     const service = location.state?.service
@@ -16,16 +18,19 @@ export default function ProfesionalPage({ user }) {
             navigate('/servicios')
             return
         }
+        if (!tenant) return
+
         supabase
             .from('barber_professionals')
             .select('*')
             .eq('is_active', true)
+            .eq('tenant_id', tenant.id)
             .order('priority', { ascending: true })
             .then(({ data }) => {
                 setProfessionals(data || [])
                 setLoading(false)
             })
-    }, [service, navigate])
+    }, [service, navigate, tenant])
 
     const handleSelect = (professional) => {
         navigate('/calendario', {

@@ -4,10 +4,12 @@ import { format, addDays, startOfWeek, isToday, parseISO } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { getAvailability } from '../utils/availability'
 import AppBar from '../components/AppBar'
+import { useTenant } from '../context/TenantContext'
 
 const DAY_NAMES = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado']
 
 export default function CalendarioPage({ user }) {
+    const { tenant } = useTenant()
     const navigate = useNavigate()
     const location = useLocation()
     const service = location.state?.service
@@ -20,17 +22,18 @@ export default function CalendarioPage({ user }) {
     const [loading, setLoading] = useState(true)
 
     const fetchSlots = useCallback(async () => {
-        if (!service) return
+        if (!service || !tenant) return
         setLoading(true)
         const dateStr = format(weekStart, 'yyyy-MM-dd')
         const slots = await getAvailability(
             dateStr,
             professional?.id || null,
-            service.duration_min
+            service.duration_min,
+            tenant.id
         )
         setAvailability(slots)
         setLoading(false)
-    }, [weekStart, service, professional])
+    }, [weekStart, service, professional, tenant])
 
     useEffect(() => {
         if (!service) {

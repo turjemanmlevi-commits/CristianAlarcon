@@ -5,8 +5,10 @@ import { es } from 'date-fns/locale'
 import { supabase } from '../lib/supabase'
 import AppBar from '../components/AppBar'
 import { syncToGoogleSheets } from '../utils/googleSheets'
+import { useTenant } from '../context/TenantContext'
 
 export default function ConfirmarPage({ user, onConfirm }) {
+    const { tenant } = useTenant()
     const navigate = useNavigate()
     const location = useLocation()
     const { service, professional, date, time, bookingToChange } = location.state || {}
@@ -49,6 +51,7 @@ export default function ConfirmarPage({ user, onConfirm }) {
                 .from('barber_professionals')
                 .select('id')
                 .eq('is_active', true)
+                .eq('tenant_id', tenant.id)
                 .order('priority', { ascending: true })
                 .limit(1)
             proId = pros?.[0]?.id
@@ -62,7 +65,8 @@ export default function ConfirmarPage({ user, onConfirm }) {
                 professional_id: proId,
                 start_datetime: startDateTime.toISOString(),
                 end_datetime: endDateTime.toISOString(),
-                status: 'confirmed'
+                status: 'confirmed',
+                tenant_id: tenant.id
             })
 
         if (bookError) {

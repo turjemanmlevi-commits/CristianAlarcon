@@ -5,8 +5,10 @@ import AppBar from '../components/AppBar'
 import { format, parseISO } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { syncToGoogleSheets } from '../utils/googleSheets'
+import { useTenant } from '../context/TenantContext'
 
 export default function PerfilPage({ user, onCancel }) {
+    const { tenant } = useTenant()
     const navigate = useNavigate()
     const [bookings, setBookings] = useState([])
     const [loading, setLoading] = useState(true)
@@ -14,7 +16,7 @@ export default function PerfilPage({ user, onCancel }) {
     const fetchBookings = useCallback(async () => {
         if (!user) return
 
-        const { data, error } = await supabase
+        let query = supabase
             .from('barber_bookings')
             .select(`
               *,
@@ -25,6 +27,12 @@ export default function PerfilPage({ user, onCancel }) {
             .eq('status', 'confirmed') // Traer solo las confirmadas activas
             .gte('start_datetime', new Date().toISOString())
             .order('start_datetime', { ascending: true })
+
+        if (tenant) {
+            query = query.eq('tenant_id', tenant.id)
+        }
+
+        const { data, error } = await query
 
         if (error) {
             console.error('Error fetching:', error)
@@ -153,7 +161,11 @@ export default function PerfilPage({ user, onCancel }) {
                             onClick={async () => {
                                 if (!window.confirm('⚠️ ¿BORRAR ABSOLUTAMENTE TODAS TUS CITAS? Esta acción no se puede deshacer.')) return
                                 setLoading(true)
-                                const { error } = await supabase.from('barber_bookings').delete().eq('user_id', user.id)
+                                let deleteQuery = supabase.from('barber_bookings').delete().eq('user_id', user.id)
+                                if (tenant) {
+                                    deleteQuery = deleteQuery.eq('tenant_id', tenant.id)
+                                }
+                                const { error } = await deleteQuery
                                 if (!error) {
                                     setBookings([])
                                     // Limpiar también la lista negra local por si acaso

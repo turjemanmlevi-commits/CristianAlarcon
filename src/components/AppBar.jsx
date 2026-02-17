@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom'
+import { useTenant } from '../context/TenantContext'
 
 export default function AppBar({ user, onBack }) {
+    const { tenant } = useTenant()
     const navigate = useNavigate()
 
     const handleAccountClick = () => {
@@ -34,7 +36,7 @@ export default function AppBar({ user, onBack }) {
                 )}
             </div>
             <div className="appbar__logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
-                C. Alarcón
+                {tenant?.name?.split(' ')[0] || 'Reserva'}
             </div>
             <div>
                 <button className="appbar__action" onClick={handleAccountClick} aria-label="Cuenta" style={{ position: 'relative', padding: 0, border: 'none', background: 'none' }}>

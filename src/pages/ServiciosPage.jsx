@@ -2,23 +2,28 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import AppBar from '../components/AppBar'
+import { useTenant } from '../context/TenantContext'
 
 export default function ServiciosPage({ user }) {
+    const { tenant } = useTenant()
     const navigate = useNavigate()
     const [services, setServices] = useState([])
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
+        if (!tenant) return
+
         supabase
             .from('barber_services')
             .select('*')
             .eq('is_active', true)
+            .eq('tenant_id', tenant.id)
             .order('price', { ascending: true })
             .then(({ data }) => {
                 setServices(data || [])
                 setLoading(false)
             })
-    }, [])
+    }, [tenant])
 
     const handleSelect = (service) => {
         navigate('/profesional', { state: { service } })

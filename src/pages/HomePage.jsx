@@ -3,10 +3,12 @@ import { format, parseISO } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { supabase } from '../lib/supabase'
 import AppBar from '../components/AppBar'
+import { useTenant } from '../context/TenantContext'
 
-const GOOGLE_MAPS_URL = 'https://www.google.com/maps/search/?api=1&query=C.+Buganvillas+39+Local+7+29651+Las+Lagunas+de+Mijas+Malaga'
+const DEFAULT_GOOGLE_MAPS_URL = 'https://www.google.com/maps/search/?api=1&query=C.+Buganvillas+39+Local+7+29651+Las+Lagunas+de+Mijas+Malaga'
 
 export default function HomePage({ user, nextBooking, loadingBooking }) {
+    const { tenant } = useTenant()
     const navigate = useNavigate()
 
     const handleGoogleLogin = async () => {
@@ -23,7 +25,7 @@ export default function HomePage({ user, nextBooking, loadingBooking }) {
         <>
             <AppBar user={user} />
             <div className="hero">
-                <div className="hero__logo">Cristian Alarcón</div>
+                <div className="hero__logo">{tenant?.name || 'Reserva Barbero'}</div>
                 <div className="hero__subtitle">B A R B E R Í A</div>
 
                 <div className="hero__cta">
@@ -67,7 +69,7 @@ export default function HomePage({ user, nextBooking, loadingBooking }) {
                 </div>
 
                 <div className="hero__info">
-                    <a href={GOOGLE_MAPS_URL} target="_blank" rel="noopener noreferrer" className="location-card">
+                    <a href={tenant?.google_maps_url || DEFAULT_GOOGLE_MAPS_URL} target="_blank" rel="noopener noreferrer" className="location-card">
                         <div className="location-card__icon">
                             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
@@ -75,8 +77,8 @@ export default function HomePage({ user, nextBooking, loadingBooking }) {
                             </svg>
                         </div>
                         <div className="location-card__text">
-                            <div className="location-card__address">C. Buganvillas, 39, Local 7</div>
-                            <div className="location-card__city">29651 Las Lagunas de Mijas, Málaga</div>
+                            <div className="location-card__address">{tenant?.address || 'C. Buganvillas, 39, Local 7'}</div>
+                            <div className="location-card__city">{tenant?.city || '29651 Las Lagunas de Mijas, Málaga'}</div>
                         </div>
                         <div className="location-card__arrow">›</div>
                     </a>

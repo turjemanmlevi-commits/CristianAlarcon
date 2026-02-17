@@ -8,9 +8,12 @@ import { format, addMinutes, isBefore, isAfter, startOfDay, parseISO } from 'dat
  * @param {number} serviceDurationMin - duration of the service in minutes
  * @returns {Object} { 'YYYY-MM-DD': ['HH:mm', ...], ... }
  */
-export async function getAvailability(weekStart, professionalId, serviceDurationMin) {
+export async function getAvailability(weekStart, professionalId, serviceDurationMin, tenantId) {
     // Fetch professionals
     let proQuery = supabase.from('barber_professionals').select('*').eq('is_active', true)
+    if (tenantId) {
+        proQuery = proQuery.eq('tenant_id', tenantId)
+    }
     if (professionalId) {
         proQuery = proQuery.eq('id', professionalId)
     }
@@ -25,21 +28,31 @@ export async function getAvailability(weekStart, professionalId, serviceDuration
     const weekEndDate = addMinutes(startOfDay(new Date(weekStartDate.getTime() + 7 * 24 * 60 * 60 * 1000)), -1)
 
     // Fetch blocks overlapping this week
-    const { data: blocks } = await supabase
+    let blocksQuery = supabase
         .from('barber_blocks')
         .select('*')
         .in('professional_id', proIds)
         .lte('start_datetime', weekEndDate.toISOString())
         .gte('end_datetime', weekStartDate.toISOString())
 
+    if (tenantId) {
+        blocksQuery = blocksQuery.eq('tenant_id', tenantId)
+    }
+    const { data: blocks } = await blocksQuery
+
     // Fetch bookings overlapping this week
-    const { data: bookings } = await supabase
+    let bookingsQuery = supabase
         .from('barber_bookings')
         .select('*')
         .in('professional_id', proIds)
         .in('status', ['pending', 'confirmed'])
         .lte('start_datetime', weekEndDate.toISOString())
         .gte('end_datetime', weekStartDate.toISOString())
+
+    if (tenantId) {
+        bookingsQuery = bookingsQuery.eq('tenant_id', tenantId)
+    }
+    const { data: bookings } = await bookingsQuery
 
     const result = {}
     const now = new Date()
