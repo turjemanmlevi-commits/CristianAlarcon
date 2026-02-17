@@ -9,6 +9,7 @@ import LoginPage from './pages/LoginPage'
 import RegistroPage from './pages/RegistroPage'
 import ConfirmarPage from './pages/ConfirmarPage'
 import PerfilPage from './pages/PerfilPage'
+import AdminLoginPage from './pages/AdminLoginPage'
 import { useTenant } from './context/TenantContext'
 
 export default function App() {
@@ -97,6 +98,12 @@ export default function App() {
                     </div>
                 </div>
             )
+        }
+
+        // BLOQUEO DE SEGURIDAD PARA LA PLATAFORMA (MAIN DOMAIN)
+        // Si el usuario NO es el administrador, mostramos el login privado
+        if (user?.email !== 'leviturjeman@gmail.com') {
+            return <AdminLoginPage />
         }
     }
 
