@@ -105,13 +105,18 @@ export default function App() {
         <div className="app-container">
             <Routes>
                 <Route path="/" element={
-                    <HomePage
-                        user={user}
-                        nextBooking={nextBooking}
-                        loadingBooking={loadingBooking}
-                        refresh={refreshBookings}
-                    />
+                    tenant ? (
+                        <HomePage
+                            user={user}
+                            nextBooking={nextBooking}
+                            loadingBooking={loadingBooking}
+                            refresh={refreshBookings}
+                        />
+                    ) : (
+                        <AdminLoginPage user={user} />
+                    )
                 } />
+                <Route path="/admin-login" element={<AdminLoginPage user={user} />} />
                 <Route path="/servicios" element={<ServiciosPage user={user} />} />
                 <Route path="/profesional" element={<ProfesionalPage user={user} />} />
                 <Route path="/calendario" element={<CalendarioPage user={user} />} />

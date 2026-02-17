@@ -9,10 +9,12 @@ export const getSubdomain = () => {
 
     // Caso especial para Vercel: si la URL contiene .vercel.app
     if (hostname.includes('.vercel.app')) {
-        // Si hay más de 2 partes antes de vercel.app, la primera es el subdominio
-        // Pero en Vercel los nombres a veces son complejos. 
-        // Solo extraemos si hay algo puntual antes de la estructura base.
-        if (parts.length > 3) return parts[0]
+        // parts: [subdomain, vercel, app] -> length 3
+        // parts: [subdomain, project, vercel, app] -> length 4
+        if (parts.length >= 3) {
+            const sub = parts[0]
+            if (sub !== 'www' && sub !== 'cristian-alarcon') return sub
+        }
         return null
     }
 
