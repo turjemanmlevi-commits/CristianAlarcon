@@ -71,11 +71,13 @@ export default function PerfilPage({ user, onCancel }) {
                 }).catch(() => { })
 
                 // Marcar como cancelada en la base de datos
-                const { error: updateError } = await supabase
+                const { data: updatedData, error: updateError } = await supabase
                     .from('barber_bookings')
                     .update({ status: 'cancelled' })
                     .eq('id', bookingId)
-                    .eq('user_id', user.id)
+                    .select()
+
+                console.log('Cancel update result:', { updatedData, updateError, bookingId, userId: user.id })
 
                 if (updateError) {
                     console.error('Error updating:', updateError)
@@ -161,11 +163,12 @@ export default function PerfilPage({ user, onCancel }) {
                             onClick={async () => {
                                 if (!window.confirm('¿CANCELAR TODAS TUS CITAS? Esta acción no se puede deshacer.')) return
                                 setLoading(true)
-                                const { error } = await supabase
+                                const { data: updated, error } = await supabase
                                     .from('barber_bookings')
                                     .update({ status: 'cancelled' })
-                                    .eq('user_id', user.id)
                                     .eq('status', 'confirmed')
+                                    .select()
+                                console.log('Bulk cancel result:', { updated, error })
                                 if (!error) {
                                     setBookings([])
                                     localStorage.removeItem(`cancelled_bookings_${user.id}`)
