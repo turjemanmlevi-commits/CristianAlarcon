@@ -54,12 +54,11 @@ export default function PerfilPage({ user, onCancel }) {
         const bId = String(bookingId)
         if (!window.confirm('¿Estás seguro de que deseas cancelar esta reserva?')) return
 
-        // 2. OPERACIÓN EN BASE DE DATOS: Borrado físico
         try {
             const booking = bookings.find(b => String(b.id) === bId)
 
             if (booking) {
-                // Sincronizar con Google Sheets ANTES de borrar
+                // Sincronizar con Google Sheets
                 await syncToGoogleSheets({
                     fecha_registro: format(new Date(), 'dd/MM/yyyy HH:mm'),
                     fecha_cita: format(parseISO(booking.start_datetime), 'dd/MM/yyyy HH:mm'),
@@ -71,16 +70,19 @@ export default function PerfilPage({ user, onCancel }) {
                     profesional: booking.barber_professionals?.name
                 }).catch(() => { })
 
-                // BORRADO FÍSICO DE LA BASE DE DATOS
-                const { error: deleteError } = await supabase
+                // Marcar como cancelada en la base de datos
+                const { error: updateError } = await supabase
                     .from('barber_bookings')
-                    .delete()
+                    .update({ status: 'cancelled' })
                     .eq('id', bookingId)
                     .eq('user_id', user.id)
 
-                if (deleteError) throw deleteError
+                if (updateError) {
+                    console.error('Error updating:', updateError)
+                    throw updateError
+                }
 
-                // CAPA DE SEGURIDAD EXTRA: Lista negra local inmediata
+                // Lista negra local como respaldo
                 const blacklistKey = `cancelled_bookings_${user.id}`
                 const localCancelled = JSON.parse(localStorage.getItem(blacklistKey) || '[]').map(String)
                 if (!localCancelled.includes(bId)) {
@@ -88,18 +90,16 @@ export default function PerfilPage({ user, onCancel }) {
                     localStorage.setItem(blacklistKey, JSON.stringify(localCancelled))
                 }
 
-                // Actualizar estado local para que desaparezca YA
+                // Quitar de la lista local inmediatamente
                 setBookings(prev => prev.filter(b => String(b.id) !== bId))
             }
 
-            // Avisamos a la Home Page de que refresque con un retardo mayor
-            setTimeout(() => {
-                if (onCancel) onCancel()
-            }, 1000)
+            // Refrescar Home Page
+            if (onCancel) onCancel()
 
-            alert('Cita cancelada y borrada de la base de datos.')
+            alert('Cita cancelada correctamente.')
         } catch (e) {
-            console.error('Error al borrar la cita:', e)
+            console.error('Error al cancelar la cita:', e)
             alert('Hubo un error al intentar cancelar la cita.')
         }
     }
@@ -159,20 +159,21 @@ export default function PerfilPage({ user, onCancel }) {
                             className="btn btn--secondary"
                             style={{ borderColor: '#ff4444', color: '#ff4444' }}
                             onClick={async () => {
-                                if (!window.confirm('⚠️ ¿BORRAR ABSOLUTAMENTE TODAS TUS CITAS? Esta acción no se puede deshacer.')) return
+                                if (!window.confirm('¿CANCELAR TODAS TUS CITAS? Esta acción no se puede deshacer.')) return
                                 setLoading(true)
-                                let deleteQuery = supabase.from('barber_bookings').delete().eq('user_id', user.id)
-                                if (tenant) {
-                                    deleteQuery = deleteQuery.or(`tenant_id.eq.${tenant.id},tenant_id.is.null`)
-                                }
-                                const { error } = await deleteQuery
+                                const { error } = await supabase
+                                    .from('barber_bookings')
+                                    .update({ status: 'cancelled' })
+                                    .eq('user_id', user.id)
+                                    .eq('status', 'confirmed')
                                 if (!error) {
                                     setBookings([])
-                                    // Limpiar también la lista negra local por si acaso
                                     localStorage.removeItem(`cancelled_bookings_${user.id}`)
-                                    alert('Se han borrado todas tus citas de la base de datos.')
+                                    if (onCancel) onCancel()
+                                    alert('Todas tus citas han sido canceladas.')
                                 } else {
-                                    alert('Error al borrar: ' + error.message)
+                                    console.error('Error:', error)
+                                    alert('Error al cancelar: ' + error.message)
                                 }
                                 setLoading(false)
                             }}
