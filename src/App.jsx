@@ -99,18 +99,6 @@ export default function App() {
                 </div>
             )
         }
-
-        // BLOQUEO DE SEGURIDAD PARA LA PLATAFORMA (MAIN DOMAIN)
-        // Lista de correos autorizados para gestionar la plataforma (plantilla)
-        const admins = [
-            'leviturjeman@gmail.com',
-            'turjemanlevi@gmail.com',
-            'turjemanmlevi@gmail.com'
-        ]
-
-        if (!admins.includes(user?.email)) {
-            return <AdminLoginPage user={user} />
-        }
     }
 
     return (
