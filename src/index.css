@@ -99,6 +99,21 @@ a:hover {
   border-bottom: 1px solid var(--border-subtle);
 }
 
+.appbar>div:first-child,
+.appbar>div:last-child {
+  min-width: 60px;
+}
+
+.appbar>div:first-child {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.appbar>div:last-child {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .appbar__back {
   background: none;
   border: none;
@@ -116,12 +131,16 @@ a:hover {
 }
 
 .appbar__logo {
+  flex: 1;
   font-family: var(--font-heading);
   font-size: 18px;
   font-weight: 700;
   color: var(--accent);
   letter-spacing: 1px;
   text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .appbar__action {
