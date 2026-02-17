@@ -44,7 +44,7 @@ export default function AppBar({ user, onBack }) {
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                 <a
-                    href="https://wa.me/34608335373"
+                    href="https://wa.me/34678528755"
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label="WhatsApp"
