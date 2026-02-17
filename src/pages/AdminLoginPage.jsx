@@ -12,7 +12,13 @@ export default function AdminLoginPage() {
         setLoading(true)
         setError(null)
 
-        if (email !== 'leviturjeman@gmail.com') {
+        const admins = [
+            'leviturjeman@gmail.com',
+            'turjemanlevi@gmail.com',
+            'turjemanmlevi@gmail.com'
+        ]
+
+        if (!admins.includes(email)) {
             setError('Acceso restringido. Solo el administrador puede entrar aquí.')
             setLoading(false)
             return

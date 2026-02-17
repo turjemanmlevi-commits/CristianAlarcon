@@ -101,8 +101,14 @@ export default function App() {
         }
 
         // BLOQUEO DE SEGURIDAD PARA LA PLATAFORMA (MAIN DOMAIN)
-        // Si el usuario NO es el administrador, mostramos el login privado
-        if (user?.email !== 'leviturjeman@gmail.com') {
+        // Lista de correos autorizados para gestionar la plataforma (plantilla)
+        const admins = [
+            'leviturjeman@gmail.com',
+            'turjemanlevi@gmail.com',
+            'turjemanmlevi@gmail.com'
+        ]
+
+        if (!admins.includes(user?.email)) {
             return <AdminLoginPage />
         }
     }

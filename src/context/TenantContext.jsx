@@ -26,7 +26,15 @@ export const TenantProvider = ({ children }) => {
                     .eq('slug', slug)
                     .single()
 
-                if (fetchError) throw fetchError
+                if (fetchError) {
+                    console.error('Error fetching tenant for slug:', slug, fetchError)
+                    throw fetchError
+                }
+
+                if (!data) {
+                    console.warn('No tenant found for slug:', slug)
+                }
+
                 setTenant(data)
 
                 // Aplicar color de tema dinámico exclusivo para este subdominio
