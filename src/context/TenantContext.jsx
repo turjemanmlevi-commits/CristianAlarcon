@@ -14,7 +14,20 @@ export const TenantProvider = ({ children }) => {
             const slug = getSubdomain()
 
             if (!slug) {
-                setTenant(null)
+                // Si no hay subdominio, cargamos la barbería de Cristian por defecto
+                // para que la plataforma funcione incluso en el dominio principal por ahora.
+                const { data: defaultTenant } = await supabase
+                    .from('tenants')
+                    .select('*')
+                    .eq('slug', 'barberiacristian')
+                    .single()
+
+                if (defaultTenant) {
+                    setTenant(defaultTenant)
+                    if (defaultTenant.theme_color) {
+                        document.documentElement.style.setProperty('--accent', defaultTenant.theme_color)
+                    }
+                }
                 setLoading(false)
                 return
             }
@@ -26,20 +39,26 @@ export const TenantProvider = ({ children }) => {
                     .eq('slug', slug)
                     .single()
 
-                if (fetchError) {
-                    console.error('Error fetching tenant for slug:', slug, fetchError)
-                    throw fetchError
-                }
+                if (data) {
+                    setTenant(data)
+                    if (data.theme_color) {
+                        document.documentElement.style.setProperty('--accent', data.theme_color)
+                    }
+                } else {
+                    // Fallback a Cristian si el subdominio no existe o falla
+                    console.warn('No tenant found for slug:', slug, 'Falling back to Cristian.')
+                    const { data: defaultTenant } = await supabase
+                        .from('tenants')
+                        .select('*')
+                        .eq('slug', 'barberiacristian')
+                        .single()
 
-                if (!data) {
-                    console.warn('No tenant found for slug:', slug)
-                }
-
-                setTenant(data)
-
-                // Aplicar color de tema dinámico exclusivo para este subdominio
-                if (data.theme_color) {
-                    document.documentElement.style.setProperty('--accent', data.theme_color)
+                    if (defaultTenant) {
+                        setTenant(defaultTenant)
+                        if (defaultTenant.theme_color) {
+                            document.documentElement.style.setProperty('--accent', defaultTenant.theme_color)
+                        }
+                    }
                 }
             } catch (err) {
                 console.error('Error fetching tenant:', err)
