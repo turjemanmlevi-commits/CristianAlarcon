@@ -5,8 +5,6 @@ import { supabase } from '../lib/supabase'
 import AppBar from '../components/AppBar'
 import { useTenant } from '../context/TenantContext'
 
-const DEFAULT_GOOGLE_MAPS_URL = 'https://www.google.com/maps/search/?api=1&query=C.+Buganvillas+39+Local+7+29651+Las+Lagunas+de+Mijas+Malaga'
-
 export default function HomePage({ user, nextBooking, loadingBooking }) {
     const { tenant } = useTenant()
     const navigate = useNavigate()
@@ -21,15 +19,43 @@ export default function HomePage({ user, nextBooking, loadingBooking }) {
         if (error) console.error('Error logging in with Google:', error.message)
     }
 
+    // VISTA PARA LA PLATAFORMA PRINCIPAL (PLANTILLA)
+    if (!tenant) {
+        return (
+            <>
+                <AppBar user={user} />
+                <div className="hero">
+                    <div className="hero__logo-text">Reserva Barbero</div>
+                    <div className="hero__subtitle">L A   P L A T A F O R M A</div>
+
+                    <div className="hero__logo-container">
+                        <img src="/logo.png" alt="Logo Reserva Barbero" className="hero__logo-img" />
+                    </div>
+
+                    <div className="hero__cta">
+                        <h2 style={{ marginBottom: '24px', fontSize: '24px' }}>Crea tu propia barbería online</h2>
+                        <p style={{ color: 'var(--text-secondary)', marginBottom: '32px' }}>
+                            La solución profesional para gestionar tus citas y clientes.
+                        </p>
+                        <button className="btn btn--secondary" onClick={() => window.location.href = 'mailto:info@reservabarbero.com'}>
+                            Contactar para empezar
+                        </button>
+                    </div>
+                </div>
+            </>
+        )
+    }
+
+    // VISTA PARA CADA BARBERÍA INDIVIDUAL (INSTANCIA)
     return (
         <>
             <AppBar user={user} />
             <div className="hero">
-                <div className="hero__logo-text">{tenant?.name || 'Reserva Barbero'}</div>
+                <div className="hero__logo-text">{tenant.name}</div>
                 <div className="hero__subtitle">B A R B E R Í A</div>
 
                 <div className="hero__logo-container">
-                    {tenant?.logo_url ? (
+                    {tenant.logo_url ? (
                         <img src={tenant.logo_url} alt={tenant.name} className="hero__logo-img" />
                     ) : (
                         <img src="/logo.png" alt="Logo" className="hero__logo-img" />
@@ -77,19 +103,21 @@ export default function HomePage({ user, nextBooking, loadingBooking }) {
                 </div>
 
                 <div className="hero__info">
-                    <a href={tenant?.google_maps_url || DEFAULT_GOOGLE_MAPS_URL} target="_blank" rel="noopener noreferrer" className="location-card">
-                        <div className="location-card__icon">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                                <circle cx="12" cy="10" r="3" />
-                            </svg>
-                        </div>
-                        <div className="location-card__text">
-                            <div className="location-card__address">{tenant?.address || 'C. Buganvillas, 39, Local 7'}</div>
-                            <div className="location-card__city">{tenant?.city || '29651 Las Lagunas de Mijas, Málaga'}</div>
-                        </div>
-                        <div className="location-card__arrow">›</div>
-                    </a>
+                    {tenant.google_maps_url && (
+                        <a href={tenant.google_maps_url} target="_blank" rel="noopener noreferrer" className="location-card">
+                            <div className="location-card__icon">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                                    <circle cx="12" cy="10" r="3" />
+                                </svg>
+                            </div>
+                            <div className="location-card__text">
+                                <div className="location-card__address">{tenant.address}</div>
+                                <div className="location-card__city">{tenant.city}</div>
+                            </div>
+                            <div className="location-card__arrow">›</div>
+                        </a>
+                    )}
 
                     <div className="location-card location-card--static">
                         <div className="location-card__icon">

@@ -662,13 +662,14 @@ a:hover {
 }
 
 .hero__logo-container {
-  width: 450px;
-  height: 450px;
-  margin-top: var(--space-xl);
-  margin-bottom: var(--space-2xl);
+  width: 600px;
+  height: 600px;
+  margin-top: var(--space-2xl);
+  margin-bottom: var(--space-3xl);
   display: flex;
   align-items: center;
   justify-content: center;
+  max-width: 95vw;
 }
 
 .hero__logo-img {
@@ -679,11 +680,12 @@ a:hover {
 
 .hero__logo-text {
   font-family: var(--font-heading);
-  font-size: 52px;
-  font-weight: 700;
+  font-size: 64px;
+  font-weight: 800;
   color: var(--accent);
   margin-bottom: var(--space-xs);
-  letter-spacing: 1px;
+  letter-spacing: -1px;
+  line-height: 1.1;
 }
 
 .hero__subtitle {
