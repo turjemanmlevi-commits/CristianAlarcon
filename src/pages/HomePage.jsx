@@ -82,10 +82,10 @@ export default function HomePage({ user, nextBooking, loadingBooking }) {
                             <div className="next-appointment-card__header">Tu próxima cita</div>
                             <div className="next-appointment-card__service">{nextBooking.barber_services?.name}</div>
                             <div className="next-appointment-card__date">
-                                <span>📅 {format(parseISO(nextBooking.start_datetime), "EEEE d 'de' MMMM", { locale: es })}</span>
-                                <span>⏰ {format(parseISO(nextBooking.start_datetime), 'HH:mm')}h</span>
+                                <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: 'middle', marginRight: '6px' }}><rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>{format(parseISO(nextBooking.start_datetime), "EEEE d 'de' MMMM", { locale: es })}</span>
+                                <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: 'middle', marginRight: '6px' }}><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>{format(parseISO(nextBooking.start_datetime), 'HH:mm')}h</span>
                             </div>
-                            <div className="next-appointment-card__pro">👤 {nextBooking.barber_professionals?.name}</div>
+                            <div className="next-appointment-card__pro"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ verticalAlign: 'middle', marginRight: '6px' }}><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>{nextBooking.barber_professionals?.name}</div>
 
                             <div className="next-appointment-card__actions">
                                 <button className="btn btn--secondary btn--sm" onClick={() => navigate('/perfil')}>Gestionar</button>
