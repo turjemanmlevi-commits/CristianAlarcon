@@ -28,6 +28,11 @@ export const TenantProvider = ({ children }) => {
 
                 if (fetchError) throw fetchError
                 setTenant(data)
+
+                // Aplicar color de tema dinámico exclusivo para este subdominio
+                if (data.theme_color) {
+                    document.documentElement.style.setProperty('--accent', data.theme_color)
+                }
             } catch (err) {
                 console.error('Error fetching tenant:', err)
                 setError(err)

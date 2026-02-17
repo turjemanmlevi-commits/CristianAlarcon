@@ -11,6 +11,7 @@
   --accent: #D4AF37;
   --accent-hover: #E0C04A;
   --accent-dark: #B8952E;
+  transition: --accent 0.3s ease;
   --success: #2ECC71;
   --error: #E74C3C;
   --info-bg: #1E3A3A;
@@ -661,9 +662,9 @@ a:hover {
 }
 
 .hero__logo-container {
-  width: 150px;
-  height: 150px;
-  margin-bottom: var(--space-md);
+  width: 320px;
+  height: 320px;
+  margin-bottom: var(--space-xl);
   display: flex;
   align-items: center;
   justify-content: center;
