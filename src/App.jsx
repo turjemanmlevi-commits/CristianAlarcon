@@ -109,7 +109,7 @@ export default function App() {
         ]
 
         if (!admins.includes(user?.email)) {
-            return <AdminLoginPage />
+            return <AdminLoginPage user={user} />
         }
     }
 
