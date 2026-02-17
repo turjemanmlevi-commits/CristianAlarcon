@@ -42,7 +42,20 @@ export default function AppBar({ user, onBack }) {
                     <img src="/logo.png" alt="Logo" style={{ height: '48px', width: 'auto', objectFit: 'contain' }} />
                 )}
             </div>
-            <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <a
+                    href="https://www.instagram.com/barberiacristianalarcon/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Instagram"
+                    style={{ color: 'var(--text-primary)', display: 'flex', alignItems: 'center' }}
+                >
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                        <circle cx="12" cy="12" r="5" />
+                        <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none" />
+                    </svg>
+                </a>
                 <button className="appbar__action" onClick={handleAccountClick} aria-label="Cuenta" style={{ position: 'relative', padding: 0, border: 'none', background: 'none' }}>
                     {userPhoto ? (
                         <div style={{
