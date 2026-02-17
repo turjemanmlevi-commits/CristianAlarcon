@@ -25,6 +25,9 @@ export default function HomePage({ user, nextBooking, loadingBooking }) {
         <>
             <AppBar user={user} />
             <div className="hero">
+                <div className="hero__logo-text">{tenant?.name || 'Reserva Barbero'}</div>
+                <div className="hero__subtitle">B A R B E R Í A</div>
+
                 <div className="hero__logo-container">
                     {tenant?.logo_url ? (
                         <img src={tenant.logo_url} alt={tenant.name} className="hero__logo-img" />
@@ -32,8 +35,6 @@ export default function HomePage({ user, nextBooking, loadingBooking }) {
                         <img src="/logo.png" alt="Logo" className="hero__logo-img" />
                     )}
                 </div>
-                {!tenant?.logo_url && <div className="hero__logo-text">{tenant?.name || 'Reserva Barbero'}</div>}
-                <div className="hero__subtitle">B A R B E R Í A</div>
 
                 <div className="hero__cta">
                     {loadingBooking ? (

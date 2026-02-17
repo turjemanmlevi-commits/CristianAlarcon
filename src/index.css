@@ -662,9 +662,10 @@ a:hover {
 }
 
 .hero__logo-container {
-  width: 320px;
-  height: 320px;
-  margin-bottom: var(--space-xl);
+  width: 450px;
+  height: 450px;
+  margin-top: var(--space-xl);
+  margin-bottom: var(--space-2xl);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -678,18 +679,18 @@ a:hover {
 
 .hero__logo-text {
   font-family: var(--font-heading);
-  font-size: 42px;
+  font-size: 52px;
   font-weight: 700;
   color: var(--accent);
-  margin-bottom: var(--space-sm);
+  margin-bottom: var(--space-xs);
   letter-spacing: 1px;
 }
 
 .hero__subtitle {
-  font-size: var(--fs-body);
+  font-size: 18px;
   color: var(--text-secondary);
-  margin-bottom: var(--space-xl);
-  letter-spacing: 3px;
+  margin-bottom: var(--space-md);
+  letter-spacing: 6px;
   text-transform: uppercase;
   font-weight: 500;
 }
