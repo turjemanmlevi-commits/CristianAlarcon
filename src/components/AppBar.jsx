@@ -35,8 +35,12 @@ export default function AppBar({ user, onBack }) {
                     </button>
                 )}
             </div>
-            <div className="appbar__logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
-                {tenant?.name?.split(' ')[0] || 'Reserva'}
+            <div className="appbar__logo" onClick={() => navigate('/')} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                {tenant?.logo_url ? (
+                    <img src={tenant.logo_url} alt={tenant.name} style={{ height: '32px', width: 'auto', objectFit: 'contain' }} />
+                ) : (
+                    <img src="/logo.png" alt="Logo" style={{ height: '32px', width: 'auto', objectFit: 'contain' }} />
+                )}
             </div>
             <div>
                 <button className="appbar__action" onClick={handleAccountClick} aria-label="Cuenta" style={{ position: 'relative', padding: 0, border: 'none', background: 'none' }}>
