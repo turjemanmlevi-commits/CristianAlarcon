@@ -662,14 +662,14 @@ a:hover {
 }
 
 .hero__logo-container {
-  width: 600px;
-  height: 600px;
-  margin-top: var(--space-2xl);
-  margin-bottom: var(--space-3xl);
+  width: 480px;
+  height: 480px;
+  margin-top: var(--space-xl);
+  margin-bottom: var(--space-2xl);
   display: flex;
   align-items: center;
   justify-content: center;
-  max-width: 95vw;
+  max-width: 90vw;
 }
 
 .hero__logo-img {
