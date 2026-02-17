@@ -664,8 +664,8 @@ a:hover {
 .hero__logo-container {
   width: 480px;
   height: 480px;
-  margin-top: var(--space-xl);
-  margin-bottom: var(--space-2xl);
+  margin-top: var(--space-2xl);
+  margin-bottom: var(--space-lg);
   display: flex;
   align-items: center;
   justify-content: center;

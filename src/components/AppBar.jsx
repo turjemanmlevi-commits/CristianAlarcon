@@ -37,9 +37,9 @@ export default function AppBar({ user, onBack }) {
             </div>
             <div className="appbar__logo" onClick={() => navigate('/')} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 {tenant?.logo_url ? (
-                    <img src={tenant.logo_url} alt={tenant.name} style={{ height: '32px', width: 'auto', objectFit: 'contain' }} />
+                    <img src={tenant.logo_url} alt={tenant.name} style={{ height: '48px', width: 'auto', objectFit: 'contain' }} />
                 ) : (
-                    <img src="/logo.png" alt="Logo" style={{ height: '32px', width: 'auto', objectFit: 'contain' }} />
+                    <img src="/logo.png" alt="Logo" style={{ height: '48px', width: 'auto', objectFit: 'contain' }} />
                 )}
             </div>
             <div>
