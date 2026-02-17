@@ -13,7 +13,7 @@ export default function HomePage({ user, nextBooking, loadingBooking }) {
         const { error } = await supabase.auth.signInWithOAuth({
             provider: 'google',
             options: {
-                redirectTo: window.location.origin + '/login'
+                redirectTo: window.location.href // Usar la URL completa actual (incluyendo subdominio)
             }
         })
         if (error) console.error('Error logging in with Google:', error.message)
