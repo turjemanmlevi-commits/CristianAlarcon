@@ -662,14 +662,23 @@ a:hover {
 }
 
 .hero__logo-container {
-  width: 480px;
-  height: 480px;
-  margin-top: var(--space-2xl);
-  margin-bottom: var(--space-lg);
+  width: 420px;
+  height: 420px;
+  margin-top: var(--space-md);
+  margin-bottom: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   max-width: 90vw;
+}
+
+.hero__cta {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-top: -20px;
 }
 
 .hero__logo-img {
@@ -688,13 +697,15 @@ a:hover {
   line-height: 1.1;
 }
 
-.hero__subtitle {
-  font-size: 18px;
-  color: var(--text-secondary);
-  margin-bottom: var(--space-md);
-  letter-spacing: 6px;
-  text-transform: uppercase;
-  font-weight: 500;
+@media (max-width: 440px) {
+  .hero__logo-container {
+    width: 340px;
+    height: 340px;
+  }
+
+  .appbar__logo img {
+    height: 38px !important;
+  }
 }
 
 .hero__cta {

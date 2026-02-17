@@ -51,8 +51,6 @@ export default function HomePage({ user, nextBooking, loadingBooking }) {
         <>
             <AppBar user={user} />
             <div className="hero">
-                <div className="hero__subtitle">B A R B E R Í A</div>
-
                 <div className="hero__logo-container">
                     {tenant.logo_url ? (
                         <img src={tenant.logo_url} alt={tenant.name} className="hero__logo-img" />
