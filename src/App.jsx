@@ -57,7 +57,20 @@ export default function App() {
         supabase.auth.getSession().then(({ data: { session } }) => {
             const currentUser = session?.user ?? null
             setUser(currentUser)
-            if (currentUser) fetchNextBooking(currentUser.id)
+            if (currentUser) {
+                fetchNextBooking(currentUser.id)
+
+                // Redirection Guard: Si venimos de un login de Google y estamos en el dominio raíz
+                // pero tenemos un origen guardado que es un subdominio, redirigimos allí.
+                const savedOrigin = localStorage.getItem('google_auth_origin')
+                const currentOrigin = window.location.origin
+                if (savedOrigin && savedOrigin !== currentOrigin) {
+                    localStorage.removeItem('google_auth_origin')
+                    window.location.href = savedOrigin + window.location.pathname + window.location.search
+                    return
+                }
+                localStorage.removeItem('google_auth_origin')
+            }
             setLoading(false)
         })
 

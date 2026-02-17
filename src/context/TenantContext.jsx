@@ -14,20 +14,8 @@ export const TenantProvider = ({ children }) => {
             const slug = getSubdomain()
 
             if (!slug) {
-                // Si no hay subdominio, cargamos la barbería de Cristian por defecto
-                // para que la plataforma funcione incluso en el dominio principal por ahora.
-                const { data: defaultTenant } = await supabase
-                    .from('tenants')
-                    .select('*')
-                    .eq('slug', 'barberiacristianalarcon')
-                    .single()
-
-                if (defaultTenant) {
-                    setTenant(defaultTenant)
-                    if (defaultTenant.theme_color) {
-                        document.documentElement.style.setProperty('--accent', defaultTenant.theme_color)
-                    }
-                }
+                // En el dominio raíz (sin subdominio), mostramos la plataforma principal
+                setTenant(null)
                 setLoading(false)
                 return
             }
