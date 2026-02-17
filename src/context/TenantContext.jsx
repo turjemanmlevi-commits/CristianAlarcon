@@ -19,7 +19,7 @@ export const TenantProvider = ({ children }) => {
                 const { data: defaultTenant } = await supabase
                     .from('tenants')
                     .select('*')
-                    .eq('slug', 'barberiacristian')
+                    .eq('slug', 'barberiacristianalarcon')
                     .single()
 
                 if (defaultTenant) {
@@ -50,7 +50,7 @@ export const TenantProvider = ({ children }) => {
                     const { data: defaultTenant } = await supabase
                         .from('tenants')
                         .select('*')
-                        .eq('slug', 'barberiacristian')
+                        .eq('slug', 'barberiacristianalarcon')
                         .single()
 
                     if (defaultTenant) {
