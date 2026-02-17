@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 import AppBar from '../components/AppBar'
 import { useTenant } from '../context/TenantContext'
@@ -7,6 +7,7 @@ import { useTenant } from '../context/TenantContext'
 export default function ServiciosPage({ user }) {
     const { tenant } = useTenant()
     const navigate = useNavigate()
+    const location = useLocation()
     const [services, setServices] = useState([])
     const [loading, setLoading] = useState(true)
 
@@ -26,7 +27,7 @@ export default function ServiciosPage({ user }) {
     }, [tenant])
 
     const handleSelect = (service) => {
-        navigate('/profesional', { state: { service } })
+        navigate('/profesional', { state: { service, bookingToChange: location.state?.bookingToChange } })
     }
 
     const formatPrice = (price) => {
@@ -72,6 +73,10 @@ export default function ServiciosPage({ user }) {
 
                 {loading ? (
                     <div className="loading"><div className="spinner" /></div>
+                ) : services.length === 0 ? (
+                    <div className="info-banner" style={{ textAlign: 'center', padding: '40px 20px' }}>
+                        No hay servicios disponibles en este momento.
+                    </div>
                 ) : (
                     services.map(service => (
                         <div

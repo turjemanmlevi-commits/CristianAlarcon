@@ -236,7 +236,7 @@ export default function PerfilPage({ user, onCancel }) {
                                         <button
                                             className="btn btn--secondary btn--sm"
                                             style={{ flex: 1 }}
-                                            onClick={() => navigate('/calendario', { state: { bookingToChange: book } })}
+                                            onClick={() => navigate('/servicios', { state: { bookingToChange: book } })}
                                         >
                                             Cambiar
                                         </button>

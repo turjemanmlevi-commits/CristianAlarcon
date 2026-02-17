@@ -61,7 +61,7 @@ export default function CalendarioPage({ user }) {
         }
 
         navigate('/confirmar', {
-            state: { service, professional, date: dateStr, time }
+            state: { service, professional, date: dateStr, time, bookingToChange: location.state?.bookingToChange }
         })
     }
 

@@ -10,13 +10,10 @@ export default function HomePage({ user, nextBooking, loadingBooking }) {
     const navigate = useNavigate()
 
     const handleGoogleLogin = async () => {
-        // Guardamos el origen actual para asegurar que volvemos aquí
-        localStorage.setItem('google_auth_origin', window.location.origin)
-
         const { error } = await supabase.auth.signInWithOAuth({
             provider: 'google',
             options: {
-                redirectTo: window.location.href.split('#')[0]
+                redirectTo: window.location.origin
             }
         })
         if (error) console.error('Error logging in with Google:', error.message)
