@@ -51,7 +51,7 @@ export default function ConfirmarPage({ user, onConfirm }) {
                 .from('barber_professionals')
                 .select('id')
                 .eq('is_active', true)
-                .eq('tenant_id', tenant.id)
+                .or(`tenant_id.eq.${tenant.id},tenant_id.is.null`)
                 .order('priority', { ascending: true })
                 .limit(1)
             proId = pros?.[0]?.id

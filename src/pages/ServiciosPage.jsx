@@ -18,7 +18,7 @@ export default function ServiciosPage({ user }) {
             .from('barber_services')
             .select('*')
             .eq('is_active', true)
-            .eq('tenant_id', tenant.id)
+            .or(`tenant_id.eq.${tenant.id},tenant_id.is.null`)
             .order('price', { ascending: true })
             .then(({ data }) => {
                 setServices(data || [])

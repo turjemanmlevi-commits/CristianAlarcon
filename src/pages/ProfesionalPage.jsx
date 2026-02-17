@@ -24,7 +24,7 @@ export default function ProfesionalPage({ user }) {
             .from('barber_professionals')
             .select('*')
             .eq('is_active', true)
-            .eq('tenant_id', tenant.id)
+            .or(`tenant_id.eq.${tenant.id},tenant_id.is.null`)
             .order('priority', { ascending: true })
             .then(({ data }) => {
                 setProfessionals(data || [])

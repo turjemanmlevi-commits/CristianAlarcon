@@ -12,7 +12,7 @@ export async function getAvailability(weekStart, professionalId, serviceDuration
     // Fetch professionals
     let proQuery = supabase.from('barber_professionals').select('*').eq('is_active', true)
     if (tenantId) {
-        proQuery = proQuery.eq('tenant_id', tenantId)
+        proQuery = proQuery.or(`tenant_id.eq.${tenantId},tenant_id.is.null`)
     }
     if (professionalId) {
         proQuery = proQuery.eq('id', professionalId)
@@ -36,7 +36,7 @@ export async function getAvailability(weekStart, professionalId, serviceDuration
         .gte('end_datetime', weekStartDate.toISOString())
 
     if (tenantId) {
-        blocksQuery = blocksQuery.eq('tenant_id', tenantId)
+        blocksQuery = blocksQuery.or(`tenant_id.eq.${tenantId},tenant_id.is.null`)
     }
     const { data: blocks } = await blocksQuery
 
@@ -50,7 +50,7 @@ export async function getAvailability(weekStart, professionalId, serviceDuration
         .gte('end_datetime', weekStartDate.toISOString())
 
     if (tenantId) {
-        bookingsQuery = bookingsQuery.eq('tenant_id', tenantId)
+        bookingsQuery = bookingsQuery.or(`tenant_id.eq.${tenantId},tenant_id.is.null`)
     }
     const { data: bookings } = await bookingsQuery
 

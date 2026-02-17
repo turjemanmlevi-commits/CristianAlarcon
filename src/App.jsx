@@ -39,7 +39,7 @@ export default function App() {
             .order('start_datetime', { ascending: true })
 
         if (tenant) {
-            query = query.eq('tenant_id', tenant.id)
+            query = query.or(`tenant_id.eq.${tenant.id},tenant_id.is.null`)
         }
 
         const { data } = await query

@@ -29,7 +29,7 @@ export default function PerfilPage({ user, onCancel }) {
             .order('start_datetime', { ascending: true })
 
         if (tenant) {
-            query = query.eq('tenant_id', tenant.id)
+            query = query.or(`tenant_id.eq.${tenant.id},tenant_id.is.null`)
         }
 
         const { data, error } = await query
@@ -163,7 +163,7 @@ export default function PerfilPage({ user, onCancel }) {
                                 setLoading(true)
                                 let deleteQuery = supabase.from('barber_bookings').delete().eq('user_id', user.id)
                                 if (tenant) {
-                                    deleteQuery = deleteQuery.eq('tenant_id', tenant.id)
+                                    deleteQuery = deleteQuery.or(`tenant_id.eq.${tenant.id},tenant_id.is.null`)
                                 }
                                 const { error } = await deleteQuery
                                 if (!error) {
