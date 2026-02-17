@@ -83,15 +83,21 @@ export default function App() {
         return <div className="app-container"><div className="loading"><div className="spinner" /></div></div>
     }
 
-    if (!tenant && window.location.hostname.split('.').length > 2) {
-        return (
-            <div className="app-container">
-                <div style={{ textAlign: 'center', padding: '50px', color: 'white' }}>
-                    <h1>404 - Barbería no encontrada</h1>
-                    <p>La barbería solicitada no existe o el enlace es incorrecto.</p>
+    if (!tenant) {
+        const hostname = window.location.hostname
+        const parts = hostname.split('.').filter(p => p !== 'www')
+
+        // Si estamos en un subdominio real (más de 2 partes) y no se encontró el tenant
+        if (parts.length > 2 && !hostname.endsWith('localhost')) {
+            return (
+                <div className="app-container">
+                    <div style={{ textAlign: 'center', padding: '50px', color: 'white' }}>
+                        <h1>404 - Barbería no encontrada</h1>
+                        <p>La barbería solicitada no existe o el enlace es incorrecto.</p>
+                    </div>
                 </div>
-            </div>
-        )
+            )
+        }
     }
 
     return (
