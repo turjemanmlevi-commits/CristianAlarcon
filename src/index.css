@@ -678,7 +678,7 @@ a:hover {
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
-  margin-top: -20px;
+  margin-top: -60px;
 }
 
 .hero__logo-img {
