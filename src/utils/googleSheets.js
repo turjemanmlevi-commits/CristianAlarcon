@@ -1,5 +1,5 @@
 export async function syncToGoogleSheets(data) {
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyGB-2o_HEVgGQMSfX9v6CaABE9ZrEHiJZwf2-BULDgXK6YFPLD-Ig2ANdqTu0MAfld/exec'
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxjRjo9e7nXHjiN1fZPGnfbRi1EuyPEE2exWG3PxZLrM9I0GwhLreAQ6VJvnv2T9bky/exec'
 
     if (!SCRIPT_URL) return;
 
