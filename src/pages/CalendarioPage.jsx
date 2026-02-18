@@ -29,7 +29,11 @@ export default function CalendarioPage({ user }) {
             dateStr,
             professional?.id || null,
             service.duration_min,
-            tenant.id
+            tenant.id,
+            tenant.open_hour ?? 10,
+            tenant.open_min ?? 0,
+            tenant.close_hour ?? 20,
+            tenant.close_min ?? 0
         )
         setAvailability(slots)
         setLoading(false)

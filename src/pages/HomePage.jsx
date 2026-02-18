@@ -19,34 +19,7 @@ export default function HomePage({ user, nextBooking, loadingBooking }) {
         if (error) console.error('Error logging in with Google:', error.message)
     }
 
-    // VISTA PARA LA PLATAFORMA PRINCIPAL (PLANTILLA)
-    if (!tenant) {
-        return (
-            <>
-                <AppBar user={user} />
-                <div className="hero">
-                    <div className="hero__logo-text">Reserva Barbero</div>
-                    <div className="hero__subtitle">L A   P L A T A F O R M A</div>
-
-                    <div className="hero__logo-container">
-                        <img src="/logo.png" alt="Logo Reserva Barbero" className="hero__logo-img" />
-                    </div>
-
-                    <div className="hero__cta">
-                        <h2 style={{ marginBottom: '24px', fontSize: '24px' }}>Crea tu propia barbería online</h2>
-                        <p style={{ color: 'var(--text-secondary)', marginBottom: '32px' }}>
-                            La solución profesional para gestionar tus citas y clientes.
-                        </p>
-                        <button className="btn btn--secondary" onClick={() => window.location.href = 'mailto:info@reservabarbero.com'}>
-                            Contactar para empezar
-                        </button>
-                    </div>
-                </div>
-            </>
-        )
-    }
-
-    // VISTA PARA CADA BARBERÍA INDIVIDUAL (INSTANCIA)
+    // VISTA PARA CADA BARBERÍA (incluyendo reservabarbero.com como plantilla)
     return (
         <>
             <AppBar user={user} />
@@ -64,27 +37,29 @@ export default function HomePage({ user, nextBooking, loadingBooking }) {
                         <div className="loading" style={{ minHeight: '100px' }}><div className="spinner" /></div>
                     ) : !user ? (
                         <>
-                            <a
-                                href="https://wa.me/34678528755"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    gap: '8px',
-                                    color: 'var(--text-secondary)',
-                                    fontSize: '16px',
-                                    fontWeight: '500',
-                                    textDecoration: 'none',
-                                    marginBottom: '12px'
-                                }}
-                            >
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
-                                </svg>
-                                678 52 87 55
-                            </a>
+                            {tenant?.whatsapp && (
+                                <a
+                                    href={`https://wa.me/${tenant.whatsapp.replace(/[^0-9]/g, '')}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        gap: '8px',
+                                        color: 'var(--text-secondary)',
+                                        fontSize: '16px',
+                                        fontWeight: '500',
+                                        textDecoration: 'none',
+                                        marginBottom: '12px'
+                                    }}
+                                >
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                        <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
+                                    </svg>
+                                    {tenant.whatsapp_display || tenant.whatsapp}
+                                </a>
+                            )}
                             <button className="btn btn--primary" onClick={() => navigate('/servicios')}>
                                 Pedir cita
                             </button>
@@ -145,8 +120,8 @@ export default function HomePage({ user, nextBooking, loadingBooking }) {
                             </svg>
                         </div>
                         <div className="location-card__text">
-                            <div className="location-card__address">Lunes - Sábado</div>
-                            <div className="location-card__city">10:00 - 19:30</div>
+                            <div className="location-card__address">{tenant.schedule_days || 'Lunes - Sábado'}</div>
+                            <div className="location-card__city">{tenant.schedule_hours || '10:00 - 20:00'}</div>
                         </div>
                     </div>
                 </div>

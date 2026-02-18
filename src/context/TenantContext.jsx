@@ -11,14 +11,8 @@ export const TenantProvider = ({ children }) => {
 
     useEffect(() => {
         const fetchTenant = async () => {
-            const slug = getSubdomain()
-
-            if (!slug) {
-                // En el dominio raíz (sin subdominio), mostramos la plataforma principal
-                setTenant(null)
-                setLoading(false)
-                return
-            }
+            // Si hay subdominio, úsalo; si no (dominio principal), carga 'reservabarbero'
+            const slug = getSubdomain() || 'reservabarbero'
 
             try {
                 const { data, error: fetchError } = await supabase
@@ -33,20 +27,9 @@ export const TenantProvider = ({ children }) => {
                         document.documentElement.style.setProperty('--accent', data.theme_color)
                     }
                 } else {
-                    // Fallback a Cristian si el subdominio no existe o falla
-                    console.warn('No tenant found for slug:', slug, 'Falling back to Cristian.')
-                    const { data: defaultTenant } = await supabase
-                        .from('tenants')
-                        .select('*')
-                        .eq('slug', 'barberiacristianalarcon')
-                        .single()
-
-                    if (defaultTenant) {
-                        setTenant(defaultTenant)
-                        if (defaultTenant.theme_color) {
-                            document.documentElement.style.setProperty('--accent', defaultTenant.theme_color)
-                        }
-                    }
+                    // Subdominio no encontrado → null (404)
+                    console.warn('No tenant found for slug:', slug)
+                    setTenant(null)
                 }
             } catch (err) {
                 console.error('Error fetching tenant:', err)

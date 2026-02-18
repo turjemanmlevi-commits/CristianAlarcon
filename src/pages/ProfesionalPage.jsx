@@ -45,12 +45,7 @@ export default function ProfesionalPage({ user }) {
     }
 
     const getPhotoSrc = (pro) => {
-        if (pro.photo_url) return pro.photo_url
-        const nameLower = pro.name.toLowerCase()
-        if (nameLower.includes('cristian')) return "/cristian.png"
-        if (nameLower.includes('daniel')) return "/daniel.png"
-        if (nameLower.includes('nasir')) return "/nasir.png"
-        return null
+        return pro.photo_url || null
     }
 
     const getProfessionalIcon = (pro) => {
@@ -145,7 +140,7 @@ export default function ProfesionalPage({ user }) {
                                         alignItems: 'center',
                                         height: 'auto',
                                         padding: '16px',
-                                        border: pro.name.toLowerCase().includes('cristian') ? '1px solid var(--accent)' : '1px solid var(--border-subtle)'
+                                        border: '1px solid var(--border-subtle)'
                                     }}
                                 >
                                     {getProfessionalIcon(pro)}

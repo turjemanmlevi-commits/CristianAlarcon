@@ -114,11 +114,7 @@ export default function PerfilPage({ user, onCancel }) {
 
     const getUserPhoto = () => {
         if (!user) return null
-        const name = (user.user_metadata?.nombre || user.user_metadata?.full_name || user.email || "").toLowerCase()
-        if (name.includes('daniel')) return '/daniel.png'
-        if (name.includes('cristian')) return '/cristian.png'
-        if (name.includes('nasir')) return '/nasir.png'
-        return null
+        return user.user_metadata?.avatar_url || user.user_metadata?.picture || null
     }
 
     const userPhoto = getUserPhoto()

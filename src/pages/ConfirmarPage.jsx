@@ -101,9 +101,9 @@ export default function ConfirmarPage({ user, onConfirm }) {
     }
 
     const addToCalendar = (type) => {
-        const title = `Cita Barbería: ${service.name}`
-        const details = `Cita con ${professional?.name || 'Barbero'} en Cristian Alarcón Barbería.`
-        const loc = "C. Buganvillas, 39, Local 7, 29651 Las Lagunas de Mijas, Málaga"
+        const title = `Cita ${tenant?.name || 'Barbería'}: ${service.name}`
+        const details = `Cita con ${professional?.name || 'Barbero'} en ${tenant?.name || 'Barbería'}.`
+        const loc = tenant?.address && tenant?.city ? `${tenant.address}, ${tenant.city}` : (tenant?.address || '')
 
         // Google and Apple need different date formats, specifically UTC for best compatibility
         const startStr = startDateTime.toISOString().replace(/-|:|\.\d+/g, "")
@@ -113,12 +113,12 @@ export default function ConfirmarPage({ user, onConfirm }) {
             const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${startStr}/${endStr}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(loc)}`
             window.open(url, '_blank')
         } else if (type === 'apple') {
-            const uid = `${Date.now()}@barberiacristian.reservabarbero.com`
+            const uid = `${Date.now()}@${tenant?.slug || 'reservabarbero'}.reservabarbero.com`
             const now = new Date().toISOString().replace(/-|:|\.\d+/g, "")
             const icsData = [
                 "BEGIN:VCALENDAR",
                 "VERSION:2.0",
-                "PRODID:-//Barberia Cristian Alarcon//ES",
+                `PRODID:-//${tenant?.name || 'ReservaBarbero'}//ES`,
                 "CALSCALE:GREGORIAN",
                 "METHOD:PUBLISH",
                 "BEGIN:VEVENT",

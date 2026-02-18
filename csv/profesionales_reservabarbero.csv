@@ -1,0 +1,4 @@
+name,photo_url,is_active,priority,tenant_id
+Cristian,/cristian.png,true,1,PONER_AQUI_ID_TENANT_RESERVABARBERO
+Daniel,/daniel.png,true,2,PONER_AQUI_ID_TENANT_RESERVABARBERO
+Nasir,/nasir.png,true,3,PONER_AQUI_ID_TENANT_RESERVABARBERO

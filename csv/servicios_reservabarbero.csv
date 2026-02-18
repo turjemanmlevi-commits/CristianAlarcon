@@ -1,0 +1,4 @@
+name,price,duration_min,is_active,tenant_id
+Corte Tradicional,15.00,30,true,PONER_AQUI_ID_TENANT_RESERVABARBERO
+Arreglo de Barba,10.00,20,true,PONER_AQUI_ID_TENANT_RESERVABARBERO
+Corte y Barba,22.00,45,true,PONER_AQUI_ID_TENANT_RESERVABARBERO

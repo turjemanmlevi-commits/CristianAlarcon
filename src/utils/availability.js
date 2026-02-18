@@ -8,7 +8,7 @@ import { format, addMinutes, isBefore, isAfter, startOfDay, parseISO } from 'dat
  * @param {number} serviceDurationMin - duration of the service in minutes
  * @returns {Object} { 'YYYY-MM-DD': ['HH:mm', ...], ... }
  */
-export async function getAvailability(weekStart, professionalId, serviceDurationMin, tenantId) {
+export async function getAvailability(weekStart, professionalId, serviceDurationMin, tenantId, openH = 10, openM = 0, closeH = 20, closeM = 0) {
     // Fetch professionals
     let proQuery = supabase.from('barber_professionals').select('*').eq('is_active', true)
     if (tenantId) {
@@ -57,11 +57,11 @@ export async function getAvailability(weekStart, professionalId, serviceDuration
     const result = {}
     const now = new Date()
 
-    // Working hours: 10:00 to 20:01
-    const OPEN_H = 10
-    const OPEN_M = 0
-    const CLOSE_H = 20
-    const CLOSE_M = 1
+    // Working hours from tenant config (defaults: 10:00 - 20:00)
+    const OPEN_H = openH
+    const OPEN_M = openM
+    const CLOSE_H = closeH
+    const CLOSE_M = closeM
 
     for (let dayOffset = 0; dayOffset < 7; dayOffset++) {
         const currentDate = new Date(weekStartDate.getTime() + dayOffset * 24 * 60 * 60 * 1000)
