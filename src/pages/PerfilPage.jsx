@@ -68,7 +68,7 @@ export default function PerfilPage({ user, onCancel }) {
                     estado: 'CANCELADO',
                     servicio: booking.barber_services?.name,
                     profesional: booking.barber_professionals?.name
-                }).catch(() => { })
+                }, tenant).catch(() => { })
 
                 // Marcar como cancelada en la base de datos
                 const { data: updatedData, error: updateError } = await supabase

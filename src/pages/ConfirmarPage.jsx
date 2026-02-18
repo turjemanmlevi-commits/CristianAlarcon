@@ -93,7 +93,7 @@ export default function ConfirmarPage({ user, onConfirm }) {
             profesional: professional?.name || 'Asignación automática'
         }
         console.log('Enviando datos a Google:', syncData)
-        await syncToGoogleSheets(syncData)
+        await syncToGoogleSheets(syncData, tenant)
 
         if (onConfirm) onConfirm()
         setSuccess(true)

@@ -27,7 +27,12 @@ export default function ServiciosPage({ user }) {
     }, [tenant])
 
     const handleSelect = (service) => {
-        navigate('/profesional', { state: { service, bookingToChange: location.state?.bookingToChange } })
+        if (tenant?.hide_professionals) {
+            // Plantilla: saltar profesional, ir directo al calendario
+            navigate('/calendario', { state: { service, professional: null, bookingToChange: location.state?.bookingToChange } })
+        } else {
+            navigate('/profesional', { state: { service, bookingToChange: location.state?.bookingToChange } })
+        }
     }
 
     const formatPrice = (price) => {

@@ -94,7 +94,7 @@ export default function ProfesionalPage({ user }) {
                     <div className="loading"><div className="spinner" /></div>
                 ) : (
                     <>
-                        {/* Indifirente con barra de burbujas horizontal */}
+                        {/* Cualquier profesional */}
                         <div
                             className="card pro-card pro-card--indifferent"
                             onClick={handleIndifferent}
@@ -126,28 +126,30 @@ export default function ProfesionalPage({ user }) {
                             <div className="pro-card__name" style={{ position: 'static', padding: 0, fontWeight: '700', fontSize: '18px' }}>Cualquier profesional</div>
                         </div>
 
-                        {/* Listado de peluqueros 1 a 1 (uno por línea) */}
-                        <div className="pro-list" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                            {professionals.map(pro => (
-                                <div
-                                    key={pro.id}
-                                    className="card pro-card"
-                                    onClick={() => handleSelect(pro)}
-                                    style={{
-                                        backgroundColor: '#1C1C1C',
-                                        backgroundImage: 'none',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        height: 'auto',
-                                        padding: '16px',
-                                        border: '1px solid var(--border-subtle)'
-                                    }}
-                                >
-                                    {getProfessionalIcon(pro)}
-                                    <div className="pro-card__name" style={{ position: 'static', padding: 0, textAlign: 'left', fontSize: '18px', fontWeight: '600' }}>{pro.name}</div>
-                                </div>
-                            ))}
-                        </div>
+                        {/* Listado individual — solo si el tenant no lo oculta */}
+                        {!tenant?.hide_professionals && (
+                            <div className="pro-list" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                {professionals.map(pro => (
+                                    <div
+                                        key={pro.id}
+                                        className="card pro-card"
+                                        onClick={() => handleSelect(pro)}
+                                        style={{
+                                            backgroundColor: '#1C1C1C',
+                                            backgroundImage: 'none',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            height: 'auto',
+                                            padding: '16px',
+                                            border: '1px solid var(--border-subtle)'
+                                        }}
+                                    >
+                                        {getProfessionalIcon(pro)}
+                                        <div className="pro-card__name" style={{ position: 'static', padding: 0, textAlign: 'left', fontSize: '18px', fontWeight: '600' }}>{pro.name}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </>
                 )}
             </div>

@@ -1,5 +1,6 @@
-export async function syncToGoogleSheets(data) {
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxjRjo9e7nXHjiN1fZPGnfbRi1EuyPEE2exWG3PxZLrM9I0GwhLreAQ6VJvnv2T9bky/exec'
+export async function syncToGoogleSheets(data, tenant) {
+    // Solo sincronizar si el tenant tiene una URL de Google Sheets configurada
+    const SCRIPT_URL = tenant?.google_sheets_url
 
     if (!SCRIPT_URL) return;
 
