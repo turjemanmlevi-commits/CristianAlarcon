@@ -113,18 +113,26 @@ export default function ConfirmarPage({ user, onConfirm }) {
             const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${startStr}/${endStr}&details=${encodeURIComponent(details)}&location=${encodeURIComponent(loc)}`
             window.open(url, '_blank')
         } else if (type === 'apple') {
+            const uid = `${Date.now()}@barberiacristian.reservabarbero.com`
+            const now = new Date().toISOString().replace(/-|:|\.\d+/g, "")
             const icsData = [
                 "BEGIN:VCALENDAR",
                 "VERSION:2.0",
+                "PRODID:-//Barberia Cristian Alarcon//ES",
+                "CALSCALE:GREGORIAN",
+                "METHOD:PUBLISH",
                 "BEGIN:VEVENT",
+                `UID:${uid}`,
+                `DTSTAMP:${now}`,
                 `DTSTART:${startStr}`,
                 `DTEND:${endStr}`,
                 `SUMMARY:${title}`,
                 `DESCRIPTION:${details}`,
                 `LOCATION:${loc}`,
+                "STATUS:CONFIRMED",
                 "END:VEVENT",
                 "END:VCALENDAR"
-            ].join("\n")
+            ].join("\r\n")
             const blob = new Blob([icsData], { type: 'text/calendar;charset=utf-8' })
             const link = document.createElement('a')
             link.href = window.URL.createObjectURL(blob)
