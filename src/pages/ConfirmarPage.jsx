@@ -85,14 +85,20 @@ export default function ConfirmarPage({ user, onConfirm }) {
         const syncData = {
             fecha_registro: format(new Date(), 'dd/MM/yyyy HH:mm'),
             fecha_cita: format(startDateTime, 'dd/MM/yyyy HH:mm'),
-            nombre: user.user_metadata?.nombre || user.user_metadata?.full_name || user.email,
-            email: user.email,
+            nombre: user.user_metadata?.nombre || user.user_metadata?.full_name || user.email || 'Cliente',
+            email: user.email || user.user_metadata?.email,
             telefono: user.user_metadata?.phone || user.user_metadata?.telefono || 'No proporcionado',
             estado: 'Confirmado',
             servicio: service.name,
             profesional: professional?.name || 'Asignación automática'
         }
-        console.log('Enviando datos a Google:', syncData)
+
+        console.log('📬 Enviando confirmación de cita:', syncData)
+
+        if (!syncData.email) {
+            console.error('❌ No se puede enviar email: El usuario no tiene email registrado.')
+        }
+
         await syncToGoogleSheets(syncData, tenant)
 
         if (onConfirm) onConfirm()

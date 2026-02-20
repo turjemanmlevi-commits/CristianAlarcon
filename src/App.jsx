@@ -38,7 +38,7 @@ export default function App() {
             .gte('start_datetime', new Date().toISOString())
             .order('start_datetime', { ascending: true })
 
-        if (tenant) {
+        if (tenant && tenant.id) {
             query = query.or(`tenant_id.eq.${tenant.id},tenant_id.is.null`)
         }
 

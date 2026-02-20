@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Panel de gestion - Barberia Cristian Alarcon">
+  <title>Panel de Gestion | Cristian Alarcon</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+
+<body>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ==================== LOGIN PAGE ==================== -->
+  <div id="loginPage" class="login-page">
+    <div class="login-card">
+      <div class="login-brand">
+        <h1>Cristian Alarcon</h1>
+        <p>Panel de Gestion</p>
+      </div>
+      <form id="loginForm" autocomplete="off">
+        <div class="form-group">
+          <label for="loginEmail">Correo electronico</label>
+          <input type="email" id="loginEmail" class="form-input" placeholder="correo@ejemplo.com" required
+            autocomplete="off" value="leviturjeman@gmail.com">
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">Contrasena</label>
+          <input type="password" id="loginPassword" class="form-input" placeholder="Introduce tu contrasena" required
+            autocomplete="new-password" value="Levi1234">
+        </div>
+        <button type="submit" class="btn btn-primary" id="loginBtn">Iniciar sesion</button>
+        <div id="loginError" class="login-error hidden"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== ADMIN LAYOUT ==================== -->
+  <div id="adminLayout" class="admin-layout hidden">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <h2>Cristian Alarcon</h2>
+        <span>Panel de Gestion</span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="sidebar-section-label">General</div>
+        <button class="nav-item active" data-page="dashboard">
+          <svg viewBox="0 0 24 24">
+            <rect x="3" y="3" width="7" height="7" rx="1" />
+            <rect x="14" y="3" width="7" height="7" rx="1" />
+            <rect x="3" y="14" width="7" height="7" rx="1" />
+            <rect x="14" y="14" width="7" height="7" rx="1" />
+          </svg>
+          <span>Dashboard</span>
+        </button>
+        <button class="nav-item" data-page="calendar">
+          <svg viewBox="0 0 24 24">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+            <line x1="16" y1="2" x2="16" y2="6" />
+            <line x1="8" y1="2" x2="8" y2="6" />
+            <line x1="3" y1="10" x2="21" y2="10" />
+          </svg>
+          <span>Calendario</span>
+        </button>
+        <button class="nav-item" data-page="appointments">
+          <svg viewBox="0 0 24 24">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="16" y1="13" x2="8" y2="13" />
+            <line x1="16" y1="17" x2="8" y2="17" />
+          </svg>
+          <span>Citas</span>
+        </button>
+
+        <div class="sidebar-section-label">Gestion</div>
+        <button class="nav-item" data-page="professionals">
+          <svg viewBox="0 0 24 24">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+          </svg>
+          <span>Profesionales</span>
+        </button>
+        <button class="nav-item" data-page="services">
+          <svg viewBox="0 0 24 24">
+            <circle cx="6" cy="6" r="3" />
+            <circle cx="6" cy="18" r="3" />
+            <line x1="20" y1="4" x2="8.12" y2="15.88" />
+            <line x1="14.47" y1="14.48" x2="20" y2="20" />
+            <line x1="8.12" y1="8.12" x2="12" y2="12" />
+          </svg>
+          <span>Servicios</span>
+        </button>
+        <button class="nav-item" data-page="clients">
+          <svg viewBox="0 0 24 24">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+          </svg>
+          <span>Clientes</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="sidebar-user-avatar" id="userAvatar">C</div>
+          <div class="sidebar-user-info">
+            <div class="sidebar-user-name" id="userName">-</div>
+            <div class="sidebar-user-role" id="userRole">-</div>
+          </div>
+        </div>
+        <button class="btn btn-secondary" style="width:100%;margin-top:10px;" id="logoutBtn">Cerrar sesion</button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="main-header">
+        <h1 class="main-header-title" id="headerTitle">Dashboard</h1>
+        <div class="main-header-actions">
+          <button class="btn btn-secondary btn-sm" id="refreshBtn">Actualizar</button>
+        </div>
+      </header>
+
+      <div class="main-body" id="mainBody">
+
+        <!-- ========== DASHBOARD ========== -->
+        <div class="page-view active" id="pageDashboard">
+          <div class="dashboard-grid">
+            <!-- Left: Today's Appointments (Vertical Scroll) -->
+            <div class="dashboard-col appointments-column">
+              <h3 class="section-title">Citas de hoy</h3>
+              <div id="todayAppointments" class="vertical-appointments-container">
+                <div class="loading-container">
+                  <div class="spinner"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Middle/Right: Game and Stats -->
+            <div class="dashboard-col main-column">
+              <div class="stats-grid" id="statsGrid"></div>
+
+              <div class="game-container">
+                <div class="game-header">
+                  <h3>Flappy Barber</h3>
+                  <p>¿Esperando clientes? ¡Echa una partida!</p>
+                </div>
+                <div class="game-canvas-wrapper">
+                  <canvas id="flappyCanvas" width="400" height="500"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========== CALENDAR ========== -->
+        <div class="page-view" id="pageCalendar">
+          <div class="filter-bar">
+            <select class="filter-select" id="calendarProFilter">
+              <option value="">Todos los profesionales</option>
+            </select>
+          </div>
+          <div class="calendar-container" id="calendarContainer"></div>
+          <div id="dayDetail" class="hidden"></div>
+        </div>
+
+        <!-- ========== APPOINTMENTS LIST ========== -->
+        <div class="page-view" id="pageAppointments">
+          <div class="filter-bar">
+            <select class="filter-select" id="apptProFilter">
+              <option value="">Todos los profesionales</option>
+            </select>
+            <select class="filter-select" id="apptStatusFilter">
+              <option value="">Todos los estados</option>
+              <option value="confirmed">Confirmada</option>
+              <option value="pending">Pendiente</option>
+              <option value="cancelled">Cancelada</option>
+            </select>
+            <input type="date" class="filter-date" id="apptDateFrom">
+            <input type="date" class="filter-date" id="apptDateTo">
+          </div>
+          <div class="list-header list-header--appointments">
+            <span>Hora</span>
+            <span>Cliente</span>
+            <span>Servicio</span>
+            <span>Profesional</span>
+            <span>Estado</span>
+            <span style="text-align:right">Acciones</span>
+          </div>
+          <div class="appointments-list" id="appointmentsList">
+            <div class="loading-container">
+              <div class="spinner"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========== PROFESSIONALS ========== -->
+        <div class="page-view" id="pageProfessionals">
+          <div class="pros-grid" id="prosGrid">
+            <div class="loading-container">
+              <div class="spinner"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========== SERVICES ========== -->
+        <div class="page-view" id="pageServices">
+          <div class="list-header list-header--services">
+            <span>Servicio</span>
+            <span>Precio</span>
+            <span>Duracion</span>
+            <span>Estado</span>
+          </div>
+          <div class="services-list" id="servicesList">
+            <div class="loading-container">
+              <div class="spinner"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========== CLIENTS ========== -->
+        <div class="page-view" id="pageClients">
+          <div class="filter-bar">
+            <input type="text" class="form-input" id="clientSearch" placeholder="Buscar cliente por nombre o email..."
+              style="max-width:360px;">
+          </div>
+          <div class="list-header list-header--clients">
+            <span>Nombre</span>
+            <span>Email</span>
+            <span>Citas</span>
+            <span>Ultima cita</span>
+          </div>
+          <div class="clients-list" id="clientsList">
+            <div class="loading-container">
+              <div class="spinner"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ==================== MODAL ==================== -->
+  <div class="modal-overlay hidden" id="modalOverlay">
+    <div class="modal">
+      <h3 class="modal-title" id="modalTitle">Confirmar</h3>
+      <div class="modal-body" id="modalBody"></div>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" id="modalCancel">Cancelar</button>
+        <button class="btn btn-primary" id="modalConfirm" style="width:auto;">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="/js/game.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+
+</html>

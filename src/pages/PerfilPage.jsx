@@ -28,7 +28,7 @@ export default function PerfilPage({ user, onCancel }) {
             .gte('start_datetime', new Date().toISOString())
             .order('start_datetime', { ascending: true })
 
-        if (tenant) {
+        if (tenant && tenant.id) {
             query = query.or(`tenant_id.eq.${tenant.id},tenant_id.is.null`)
         }
 
@@ -159,22 +159,30 @@ export default function PerfilPage({ user, onCancel }) {
                             onClick={async () => {
                                 if (!window.confirm('¿CANCELAR TODAS TUS CITAS? Esta acción no se puede deshacer.')) return
                                 setLoading(true)
-                                const { data: updated, error } = await supabase
-                                    .from('barber_bookings')
-                                    .update({ status: 'cancelled' })
-                                    .eq('status', 'confirmed')
-                                    .select()
-                                console.log('Bulk cancel result:', { updated, error })
-                                if (!error) {
-                                    setBookings([])
-                                    localStorage.removeItem(`cancelled_bookings_${user.id}`)
-                                    if (onCancel) onCancel()
-                                    alert('Todas tus citas han sido canceladas.')
-                                } else {
-                                    console.error('Error:', error)
+                                try {
+                                    const { data: updated, error } = await supabase
+                                        .from('barber_bookings')
+                                        .update({ status: 'cancelled' })
+                                        .eq('status', 'confirmed')
+                                        .eq('user_id', user.id)
+                                        .select()
+
+                                    console.log('Bulk cancel result:', { updated, error })
+
+                                    if (!error) {
+                                        setBookings([])
+                                        localStorage.removeItem(`cancelled_bookings_${user.id}`)
+                                        if (onCancel) onCancel()
+                                        alert('Todas tus citas han sido canceladas.')
+                                    } else {
+                                        throw error
+                                    }
+                                } catch (error) {
+                                    console.error('Error en cancelación masiva:', error)
                                     alert('Error al cancelar: ' + error.message)
+                                } finally {
+                                    setLoading(false)
                                 }
-                                setLoading(false)
                             }}
                         >
                             Borrar todo mi historial de citas
