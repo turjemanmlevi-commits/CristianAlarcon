@@ -1,6 +1,6 @@
 export async function syncToGoogleSheets(data, tenant) {
-    // URL DEFINITIVA proporcionada por el usuario - Esta es la que funciona
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwRHpwizBuFSsrTbsb5mWXaT938nN4oIcNOwR-kA8rh_GBIr1PCt1z60XsjsCZUIFrd/exec';
+    // URL DEFINITIVA con MailApp autorizado
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyJ9RmdlhfT2DV3I3Kg0K8PtwQfqudrQJ6-HpBcYI7R0S_DTy56Y77exs64QZrJl7sy/exec';
 
     // Preparar datos con todos los campos necesarios para el script de Google
     const fullData = {
